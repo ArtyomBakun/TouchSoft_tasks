@@ -39,8 +39,8 @@ public class SummandsImpl implements Summands {
 
 	@Override
 	public long[][] allMaxProduct(long n) {
-		// TODO Auto-generated method stub
-		return null;
+		long res[][] = {maxProduct(n)};//cause of this decision see at attached *.doc file
+		return res;
 	}
 	
 	public long[] maxPairProduct(long n){
