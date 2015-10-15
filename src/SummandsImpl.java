@@ -27,10 +27,7 @@ public class SummandsImpl implements Summands {
 		for(int j = 0; j < i; j++){
 			numbers[j] = min + j;
 		}
-		long rest = n;
-		for(int j = 0; j < i; j++){
-			rest -= numbers[j];
-		}
+		long rest = n - (min*i + i*(i - 1)/2);
 		for(int j = 0; j < rest; j++){
 			numbers[i - j%i - 1]++;
 		}
@@ -39,19 +36,28 @@ public class SummandsImpl implements Summands {
 
 	@Override
 	public long[][] allMaxProduct(long n) {
-		long res[][] = {maxProduct(n)};//cause of this decision see at attached *.doc file
+//		One consequence of Quadratic sieve algorithm is reduced to that a constant amount of a limited set of numbers 
+//		will give the maximum product when these numbers are equal. Accordingly, each of these numbers is sum / n. 
+//		Prohibition of identical values imposes a restriction n <(sum / n) / 2 (otherwise it will be impossible to spread 
+//		the n integers in the interval (0, ..., n)). Thus, the function s (n) = (c / n) ^ n (where c - sum of all numbers, 
+//		and n - number of them) has a single maximum. At the same time n = floor (s ^ -1 (s_max)).
+//		Algorithm of the method maxProduct() constructing an array with a maximum product of all possible array of specified length.
+//		Thus, for any number exists two arrays of any length in which the product of all the elements is maximum 
+//		and equal to each other. So:
+		long res[][] = {maxProduct(n)};
 		return res;
 	}
 	
 	public long[] maxPairProduct(long n){
-		int next = (int) ((Math.sqrt(8*n + 1)-1)/2);
-		long numbers[] = new long[next]; 
-		for (int i = 0; i < next; i++) {
+		int count = (int) ((Math.sqrt(8*n + 1)-1)/2);//count of elements (== count) of 
+														//arithmetic progression depend of it sum (== n)
+		long numbers[] = new long[count]; 
+		for (int i = 0; i < count; i++) {
 			numbers[i] = i + 1;
 		}
-		n -= next + next*(next - 1)/2;
-		for(int i = 0; i < n; i++){
-			numbers[next - i%next - 1]++;
+		long rest = n - (count + count*(count - 1)/2);
+		for(int i = 0; i < rest; i++){
+			numbers[count - i - 1]++;
 		}
 		return numbers;
 		
@@ -59,7 +65,8 @@ public class SummandsImpl implements Summands {
 	
 	public static void main(String[] args) {
 		Summands sm = new SummandsImpl();
-		long res[] = sm.maxPairProduct(49);//maxProduct(1_00_000_000_000_000L);
+		long res[] = //sm.maxPairProduct(49);
+		sm.maxProduct(19);
 		for (int i = 0; i < res.length; i++) {
 			System.out.printf("%3s",res[i]);
 			if (i%15 == 14) System.out.println("");
